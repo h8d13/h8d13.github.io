@@ -1,20 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My GitHub Pages Site</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Welcome to My GitHub Pages Site</h1>
-  </header>
-  <main>
-    <p>This is my new GitHub Pages website!</p>
-  </main>
-  <footer>
-    <p>© 2025 - Created with GitHub Pages</p>
-  </footer>
+    <div class="container">
+        <div class="gallery-container">
+            <h1 class="gallery-title" id="galleryTitle">Amazing Landscapes</h1>
+            
+            <div class="gallery-image-container">
+                <img src="" alt="Gallery image" class="gallery-image" id="galleryImage">
+            </div>
+            
+            <p class="gallery-description" id="galleryDescription">
+                Discover the beauty of nature through our curated collection of breathtaking landscapes.
+            </p>
+            
+            <div class="gallery-controls" id="galleryControls">
+                <!-- Dots will be added by JavaScript -->
+            </div>
+            
+            <div class="button" id="nextButton">Next Image</div>
+        </div>
+    </div>
+
+    <script>
+        // Gallery data - using GitHub /images path
+        const galleryItems = [
+            {
+                title: "Mountain Majesty",
+                image: "/images/mountain.jpg",
+                description: "Towering peaks reach toward the sky, their snow-capped summits catching the golden light of dawn. These ancient mountains have stood the test of time, witnessing the changing seasons for millennia."
+            },
+            {
+                title: "Coastal Serenity",
+                image: "/images/coast.jpg",
+                description: "Waves gently lap against the shore, creating a soothing rhythm that calms the soul. The vast expanse of the ocean stretches to the horizon, a reminder of nature's infinite beauty."
+            },
+            {
+                title: "Forest Enchantment",
+                image: "/images/forest.jpg",
+                description: "Sunlight filters through the dense canopy, creating dappled patterns on the forest floor. Ancient trees stand as silent guardians, their branches home to countless creatures."
+            },
+            {
+                title: "Desert Mystique",
+                image: "/images/desert.jpg",
+                description: "Golden sands shift and change with the wind, creating ever-evolving sculptures across the vast landscape. Despite the harsh conditions, life finds a way to thrive in this beautiful desolation."
+            },
+            {
+                title: "Aurora Wonder",
+                image: "/images/aurora.jpg",
+                description: "The night sky comes alive with dancing curtains of light, painting the darkness with vibrant greens and purples. This cosmic spectacle reminds us of the magic that exists beyond our world."
+            }
+        ];
+
+        // Elements
+        const titleElement = document.getElementById('galleryTitle');
+        const imageElement = document.getElementById('galleryImage');
+        const descriptionElement = document.getElementById('galleryDescription');
+        const controlsElement = document.getElementById('galleryControls');
+        const nextButton = document.getElementById('nextButton');
+
+        let currentIndex = 0;
+
+        // Initialize gallery
+        function initGallery() {
+            // Create dots for each gallery item
+            galleryItems.forEach((item, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('gallery-dot');
+                if (index === 0) dot.classList.add('active');
+                
+                dot.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateGallery();
+                });
+                
+                controlsElement.appendChild(dot);
+            });
+            
+            // Set initial content
+            updateGallery();
+            
+            // Add event listener for the next button
+            nextButton.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % galleryItems.length;
+                updateGallery();
+            });
+            
+            // Auto rotate every X ms 
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % galleryItems.length;
+                updateGallery();
+            }, 5000);
+        }
+
+        // Update gallery content
+        function updateGallery() {
+            const item = galleryItems[currentIndex];
+            
+            // Update content with fade transition
+            titleElement.textContent = item.title;
+            imageElement.src = item.image;
+            descriptionElement.textContent = item.description;
+            
+            // Update active dot
+            const dots = controlsElement.querySelectorAll('.gallery-dot');
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initGallery);
+    </script>
 </body>
 </html>
