@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Svege</title>
   <link rel="icon" id="favicon" href="./assets/ks_16x16.gif" type="image/gif">
 </head>
-<body>
-  <h1>Test</h1>
-  <p>Hopefully.</p>
-</body>
-</html>
+
+# Title
