@@ -4,3 +4,11 @@ fetch('./assets/art/sauron.txt')
   .then(art => {
     document.getElementById('art').textContent = art;
   });
+
+//* Redirect to /alpine when user types "alpine"
+document.body.addEventListener('input', function(e) {
+  const text = document.body.textContent.trim().toLowerCase();
+  if (text === 'alpine') {
+    window.location.href = '/alpine';
+  }
+});
