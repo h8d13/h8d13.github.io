@@ -26,11 +26,11 @@ window.onload = function()
         autostart: true,
         bzimage_initrd_from_filesystem: true,
         cmdline: "rw root=host9p rootfstype=9p rootflags=trans=virtio,cache=loose modules=virtio_pci tsc=reliable",
-        //initial_state: { url: "../images/alpine-state.bin" },
+        //* initial_state: { url: "./images/alpine-state.bin" },
     });
 };
 </script>
 <div id="screen_container">
-    <div style="white-space: pre; font: 14px monospace; line-height: 14px"></div>
+    <div style="white-space: pre; font: 13px monospace; line-height: 14px"></div>
     <canvas style="display: none"></canvas>
 </div>
