@@ -17,6 +17,7 @@ if (deleteBtn) {
 
 //* Redirect to /alpine when user types "alpine"
 //* Redirect to /arch when user types "arch"
+//* Show help when user types "help"
 document.body.addEventListener('input', function(e) {
   const text = document.body.textContent.trim().toLowerCase();
   if (text === 'alpine') {
@@ -24,5 +25,14 @@ document.body.addEventListener('input', function(e) {
   }
   if (text === 'arch') {
     window.location.href = '/arch';
+  }
+  if (text === 'help') {
+    const artElement = document.getElementById('art');
+    artElement.textContent = `Available Commands:
+
+  alpine  - Launch Alpine Linux terminal
+  arch    - Launch Arch Linux emulator
+  help    - Show this help message
+  `;
   }
 });
