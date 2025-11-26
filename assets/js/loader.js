@@ -24,27 +24,33 @@ document.body.addEventListener('click', function(e) {
 });
 
 //* Helper function to clear typed command and show content
-function showContent(command, content) {
+function showContent(content) {
   const editableArea = document.getElementById('editable-area');
   const artElement = document.getElementById('art');
 
   // Update content without toggling contentEditable to preserve element state
   artElement.innerHTML = content;
 
-  // Remove the typed command text
+  // Remove all text nodes that are not inside the art element
   const textNodes = [];
   const walker = document.createTreeWalker(
     editableArea,
     NodeFilter.SHOW_TEXT,
-    null,
+    {
+      acceptNode: function(node) {
+        // Only accept text nodes that are NOT inside the art element
+        if (!artElement.contains(node)) {
+          return NodeFilter.FILTER_ACCEPT;
+        }
+        return NodeFilter.FILTER_REJECT;
+      }
+    },
     false
   );
   while (walker.nextNode()) {
-    if (walker.currentNode !== artElement.firstChild && walker.currentNode.textContent.trim() === command) {
-      textNodes.push(walker.currentNode);
-    }
+    textNodes.push(walker.currentNode);
   }
-  textNodes.forEach(node => node.textContent = '');
+  textNodes.forEach(node => node.remove());
 
   // Reset focus to editable area to maintain proper state
   editableArea.focus();
@@ -65,11 +71,81 @@ function showContent(command, content) {
 //* Show repos when user types "repos"
 const editableArea = document.getElementById('editable-area');
 
-//* Handle keyboard events to prevent breaking the editable zone
+//* Track if a command is currently being processed
+let isProcessingCommand = false;
+
+//* Helper function to extract typed text (excluding art content)
+function getTypedText() {
+  const artElement = document.getElementById('art');
+
+  // Get all text nodes that are NOT inside the art element
+  const textParts = [];
+  const walker = document.createTreeWalker(
+    editableArea,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode: function(node) {
+        if (!artElement.contains(node)) {
+          return NodeFilter.FILTER_ACCEPT;
+        }
+        return NodeFilter.FILTER_REJECT;
+      }
+    },
+    false
+  );
+
+  while (walker.nextNode()) {
+    textParts.push(walker.currentNode.textContent);
+  }
+
+  return textParts.join('').trim().toLowerCase();
+}
+
+//* Handle keyboard events to prevent breaking the editable zone and process commands
 editableArea.addEventListener('keydown', function(e) {
   // Ensure the editable area remains editable
   if (!editableArea.isContentEditable) {
     editableArea.contentEditable = 'true';
+  }
+
+  // Handle Enter key for command execution
+  if (e.key === 'Enter') {
+    e.preventDefault();
+
+    if (isProcessingCommand) return;
+
+    const text = getTypedText();
+
+    if (text === 'alpine') {
+      window.location.href = '/alpine';
+    } else if (text === 'arch') {
+      window.location.href = '/arch';
+    } else if (text === 'vase') {
+      window.location.href = '/vase';
+    } else if (text === 'help') {
+      isProcessingCommand = true;
+      showContent(`Available Commands:
+
+  Nobody there to help you, only yourself.
+
+  alpine  - Launch Alpine v86
+  arch    - Launch Arch v86
+  vase    - Launch Vase
+  repos   - Show repository links
+  help    - Show this help message
+  `);
+      isProcessingCommand = false;
+    } else if (text === 'repos') {
+      isProcessingCommand = true;
+      showContent(`Repositories:
+
+  <a href="https://github.com/h8d13/Vase" target="_blank">Arch Installer</a>
+  <a href="https://github.com/h8d13/VaseX" target="_blank">Artix Installer</a>
+  <a href="https://github.com/ryk4rd/grimaur" target="_blank">110k+ AUR Packages</a>
+  <a href="https://github.com/h8d13/TERCES" target="_blank">U2F Fido2 Keys</a>
+  `);
+      isProcessingCommand = false;
+    }
   }
 });
 
@@ -84,37 +160,5 @@ editableArea.addEventListener('beforeinput', function(e) {
         editableArea.focus();
       }
     }, 0);
-  }
-});
-
-editableArea.addEventListener('input', function() {
-  const text = editableArea.textContent.trim().toLowerCase();
-  if (text === 'alpine') {
-    window.location.href = '/alpine';
-  }
-  if (text === 'arch') {
-    window.location.href = '/arch';
-  }
-  if (text === 'vase') {
-    window.location.href = '/vase';
-  }
-  if (text === 'help') {
-    showContent('help', `Available Commands:
-
-  alpine  - Launch Alpine v86
-  arch    - Launch Arch v86
-  vase    - Launch Vase
-  repos   - Show repository links
-  help    - Show this help message
-  `);
-  }
-  if (text === 'repos') {
-    showContent('repos', `Repositories:
-
-  <a href="https://github.com/h8d13/Vase" target="_blank">Arch Installer</a>
-  <a href="https://github.com/h8d13/VaseX" target="_blank">Artix Installer</a>
-  <a href="https://github.com/ryk4rd/grimaur" target="_blank">110k+ AUR Packages</a>
-  <a href="https://github.com/h8d13/TERCES" target="_blank">U2F Fido2 Keys</a>
-  `);
   }
 });
