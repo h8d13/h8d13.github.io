@@ -14,6 +14,18 @@ pre {
   margin: 0;
   font-size: 13px;
 }
+a {
+  color: #00ff00;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: #00ff00;
+  text-decoration: underline;
+}
+a:visited {
+  color: #00cc00;
+}
 #delete-btn {
   position: fixed;
   top: 20px;
