@@ -3,9 +3,14 @@ body {
   padding: 0;
   background: #000;
   color: #fff;
-  font-family: monospace;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 pre {
   white-space: pre;
+  margin: 0;
 }
