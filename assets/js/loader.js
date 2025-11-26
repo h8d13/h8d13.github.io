@@ -15,7 +15,7 @@ if (deleteBtn) {
   });
 }
 
-//* Handle link clicks in contenteditable area
+//* Handle link clicks
 document.body.addEventListener('click', function(e) {
   if (e.target.tagName === 'A') {
     e.preventDefault();
@@ -23,102 +23,23 @@ document.body.addEventListener('click', function(e) {
   }
 });
 
-//* Helper function to clear typed command and show content
-function showContent(content) {
-  const editableArea = document.getElementById('editable-area');
-  const artElement = document.getElementById('art');
+//* Handle command input
+const commandInput = document.getElementById('command-input');
+const artElement = document.getElementById('art');
 
-  // Update content without toggling contentEditable to preserve element state
-  artElement.innerHTML = content;
-
-  // Remove all child nodes that are not the art element
-  const nodesToRemove = [];
-  for (let i = 0; i < editableArea.childNodes.length; i++) {
-    const node = editableArea.childNodes[i];
-    if (node !== artElement) {
-      nodesToRemove.push(node);
-    }
-  }
-  nodesToRemove.forEach(node => node.remove());
-
-  // Reset focus to editable area to maintain proper state
-  editableArea.focus();
-
-  // Move cursor to end of editable area (after the art element)
-  const range = document.createRange();
-  const selection = window.getSelection();
-  range.selectNodeContents(editableArea);
-  range.collapse(false);
-  selection.removeAllRanges();
-  selection.addRange(range);
-}
-
-//* Redirect to /alpine when user types "alpine"
-//* Redirect to /arch when user types "arch"
-//* Redirect to /vase when user types "vase"
-//* Show help when user types "help"
-//* Show repos when user types "repos"
-const editableArea = document.getElementById('editable-area');
-
-//* Track if a command is currently being processed
-let isProcessingCommand = false;
-
-//* Helper function to extract typed text (excluding art content)
-function getTypedText() {
-  const artElement = document.getElementById('art');
-
-  // Get all text nodes that are NOT inside the art element
-  const textParts = [];
-  const walker = document.createTreeWalker(
-    editableArea,
-    NodeFilter.SHOW_TEXT,
-    {
-      acceptNode: function(node) {
-        // Skip empty text nodes
-        if (node.textContent.trim() === '') {
-          return NodeFilter.FILTER_SKIP;
-        }
-        // Accept text nodes that are NOT inside the art element
-        if (!artElement.contains(node) && node !== artElement) {
-          return NodeFilter.FILTER_ACCEPT;
-        }
-        return NodeFilter.FILTER_REJECT;
-      }
-    },
-    false
-  );
-
-  while (walker.nextNode()) {
-    textParts.push(walker.currentNode.textContent);
-  }
-
-  return textParts.join('').trim().toLowerCase();
-}
-
-//* Handle keyboard events to prevent breaking the editable zone and process commands
-editableArea.addEventListener('keydown', function(e) {
-  // Ensure the editable area remains editable
-  if (!editableArea.isContentEditable) {
-    editableArea.contentEditable = 'true';
-  }
-
-  // Handle Enter key for command execution
+commandInput.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
     e.preventDefault();
+    const command = commandInput.value.trim().toLowerCase();
 
-    if (isProcessingCommand) return;
-
-    const text = getTypedText();
-
-    if (text === 'alpine') {
+    if (command === 'alpine') {
       window.location.href = '/alpine';
-    } else if (text === 'arch') {
+    } else if (command === 'arch') {
       window.location.href = '/arch';
-    } else if (text === 'vase') {
+    } else if (command === 'vase') {
       window.location.href = '/vase';
-    } else if (text === 'help') {
-      isProcessingCommand = true;
-      showContent(`Available Commands:
+    } else if (command === 'help') {
+      artElement.textContent = `Available Commands:
 
   Nobody there to help you, only yourself.
 
@@ -127,32 +48,19 @@ editableArea.addEventListener('keydown', function(e) {
   vase    - Launch Vase
   repos   - Show repository links
   help    - Show this help message
-  `);
-      isProcessingCommand = false;
-    } else if (text === 'repos') {
-      isProcessingCommand = true;
-      showContent(`Repositories:
+  `;
+      commandInput.value = '';
+    } else if (command === 'repos') {
+      artElement.innerHTML = `Repositories:
 
   <a href="https://github.com/h8d13/Vase" target="_blank">Arch Installer</a>
   <a href="https://github.com/h8d13/VaseX" target="_blank">Artix Installer</a>
   <a href="https://github.com/ryk4rd/grimaur" target="_blank">110k+ AUR Packages</a>
   <a href="https://github.com/h8d13/TERCES" target="_blank">U2F Fido2 Keys</a>
-  `);
-      isProcessingCommand = false;
+  `;
+      commandInput.value = '';
+    } else {
+      commandInput.value = '';
     }
-  }
-});
-
-//* Handle beforeinput to maintain proper state during deletions
-editableArea.addEventListener('beforeinput', function(e) {
-  // Ensure proper behavior for delete operations
-  if (e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward' || e.inputType === 'deleteByCut') {
-    // Allow default behavior but ensure contenteditable stays true
-    setTimeout(() => {
-      if (!editableArea.isContentEditable) {
-        editableArea.contentEditable = 'true';
-        editableArea.focus();
-      }
-    }, 0);
   }
 });

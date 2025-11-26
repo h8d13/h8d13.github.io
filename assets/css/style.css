@@ -5,22 +5,33 @@ body {
   color: #fff;
   font-family: 'Courier New', Courier, monospace;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-}
-#editable-area {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 100vh;
-  outline: none;
 }
 pre {
   white-space: pre;
   margin: 0;
   font-size: 13px;
+  text-align: center;
+}
+#command-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  margin-top: 20px;
+  padding: 10px;
+  text-align: center;
+  width: 300px;
+  border-bottom: 1px solid #333;
+  transition: border-color 0.2s;
+}
+#command-input:focus {
+  border-bottom-color: #00ff00;
 }
 a {
   color: #00ff00;
