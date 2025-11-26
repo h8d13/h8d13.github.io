@@ -15,9 +15,40 @@ if (deleteBtn) {
   });
 }
 
+//* Handle link clicks in contenteditable area
+document.body.addEventListener('click', function(e) {
+  if (e.target.tagName === 'A') {
+    e.preventDefault();
+    window.open(e.target.href, '_blank');
+  }
+});
+
+//* Helper function to clear typed command and show content
+function showContent(command, content) {
+  document.body.contentEditable = 'false';
+  const artElement = document.getElementById('art');
+  artElement.innerHTML = content;
+  // Remove the typed command text
+  const textNodes = [];
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    null,
+    false
+  );
+  while (walker.nextNode()) {
+    if (walker.currentNode !== artElement.firstChild && walker.currentNode.textContent.trim() === command) {
+      textNodes.push(walker.currentNode);
+    }
+  }
+  textNodes.forEach(node => node.textContent = '');
+  document.body.contentEditable = 'true';
+}
+
 //* Redirect to /alpine when user types "alpine"
 //* Redirect to /arch when user types "arch"
 //* Show help when user types "help"
+//* Show repos when user types "repos"
 document.body.addEventListener('input', function(e) {
   const text = document.body.textContent.trim().toLowerCase();
   if (text === 'alpine') {
@@ -27,28 +58,21 @@ document.body.addEventListener('input', function(e) {
     window.location.href = '/arch';
   }
   if (text === 'help') {
-    document.body.contentEditable = 'false';
-    const artElement = document.getElementById('art');
-    artElement.textContent = `Available Commands:
+    showContent('help', `Available Commands:
 
-  alpine  - Launch Alpine v86 VM
-  arch    - Launch Arch v86 VM
+  alpine  - Launch Alpine v86
+  arch    - Launch Arch v86
+  repos   - Show repository links
   help    - Show this help message
-  `;
-    // Remove the typed "help" text
-    const textNodes = [];
-    const walker = document.createTreeWalker(
-      document.body,
-      NodeFilter.SHOW_TEXT,
-      null,
-      false
-    );
-    while (walker.nextNode()) {
-      if (walker.currentNode !== artElement.firstChild && walker.currentNode.textContent.trim() === 'help') {
-        textNodes.push(walker.currentNode);
-      }
-    }
-    textNodes.forEach(node => node.textContent = '');
-    document.body.contentEditable = 'true';
+  `);
+  }
+  if (text === 'repos') {
+    showContent('repos', `Repositories:
+
+  <a href="https://github.com/h8d13/Vase" target="_blank">Arch Installer</a>
+  <a href="https://github.com/h8d13/VaseX" target="_blank">Artix Installer</a>
+  <a href="https://github.com/ryk4rd/grimaur" target="_blank">110k+ AUR Packages</a>
+  <a href="https://github.com/h8d13/TERCES" target="_blank">U2F Fido2 Keys</a>
+  `);
   }
 });
