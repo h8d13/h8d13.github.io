@@ -10,9 +10,11 @@ dark.addEventListener('change', update);
 //* Flash on user interaction
 let flashInterval = null;
 let toggle = false;
+let isFlashing = false;
 
 function flash() {
-  if (flashInterval) clearInterval(flashInterval);
+  if (isFlashing) return; // Prevent overlapping flashes
+  isFlashing = true;
 
   flashInterval = setInterval(() => {
     fi.href = `./assets/visuals/ks_32x32_${toggle ? 'd' : 'l'}.gif`;
@@ -23,10 +25,11 @@ function flash() {
     clearInterval(flashInterval);
     flashInterval = null;
     update(dark);
+    isFlashing = false;
   }, 1000);
 }
 
 //* Trigger flash on any interaction
-['click', 'mousemove', 'keypress', 'scroll'].forEach(event => {
+['click', 'mousemove', 'keydown', 'scroll'].forEach(event => {
   document.addEventListener(event, flash);
 });
