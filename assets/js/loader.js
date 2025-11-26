@@ -27,12 +27,28 @@ document.body.addEventListener('input', function(e) {
     window.location.href = '/arch';
   }
   if (text === 'help') {
+    document.body.contentEditable = 'false';
     const artElement = document.getElementById('art');
     artElement.textContent = `Available Commands:
 
-  alpine  - Launch Alpine Linux terminal
-  arch    - Launch Arch Linux emulator
+  alpine  - Launch Alpine v86 VM
+  arch    - Launch Arch v86 VM
   help    - Show this help message
   `;
+    // Remove the typed "help" text
+    const textNodes = [];
+    const walker = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+      null,
+      false
+    );
+    while (walker.nextNode()) {
+      if (walker.currentNode !== artElement.firstChild && walker.currentNode.textContent.trim() === 'help') {
+        textNodes.push(walker.currentNode);
+      }
+    }
+    textNodes.forEach(node => node.textContent = '');
+    document.body.contentEditable = 'true';
   }
 });
