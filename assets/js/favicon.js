@@ -11,7 +11,7 @@ dark.addEventListener('change', update);
 let flashInterval = null;
 let toggle = false;
 
-function flash(duration = 3000) {
+function flash() {
   if (flashInterval) clearInterval(flashInterval);
 
   flashInterval = setInterval(() => {
@@ -23,8 +23,10 @@ function flash(duration = 3000) {
     clearInterval(flashInterval);
     flashInterval = null;
     update(dark);
-  }, duration);
+  }, 1000);
 }
 
-//* Trigger flash on mousemove, keypress, scroll
-document.addEventListener('click', () => flash());
+//* Trigger flash on any interaction
+['click', 'mousemove', 'keypress', 'scroll'].forEach(event => {
+  document.addEventListener(event, flash);
+});
