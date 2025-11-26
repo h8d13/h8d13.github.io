@@ -3,7 +3,8 @@
 - Using v86 project
     - Copied this file [AlpineExample](https://github.com/copy/v86/blob/master/examples/alpine.html)
     - Built the Dockerfile from [AlpineTools](https://github.com/copy/v86/tree/master/tools/docker/alpine)
-    - Grabbed the files from `Releases`, the `bios/` files and the generated system in `images/` from the Docker build
+    - Dl files from `Releases` and the `bios/` 
+    - Generated system in `images/` from the Docker build
     - Adapt paths to match our own
 - Add support for save state
 
