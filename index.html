@@ -1,23 +1,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Svege</title>
-  <!-- Set empty -->
-  <link rel="icon" id="favicon" href="" type="image/gif">
+  <link rel="icon" id="favicon" type="image/gif">
   <script>
-    const favicon = document.getElementById('favicon');
-    const matcher = window.matchMedia('(prefers-color-scheme: dark)');
-
-    function updateFavicon(e) {
-      //* Match if pref theme is dark if it is set _d
-      //* _d is actually white bg but makes sense kinda
-      if (e.matches) {
-        favicon.href = './assets/visuals/ks_32x32_d.gif';
-      } else {
-        favicon.href = './assets/visuals/ks_32x32_l.gif';
-      }
-    }
-    updateFavicon(matcher);
-    matcher.addEventListener('change', updateFavicon);
+    const fi = document.getElementById('favicon');
+    //*Figure out if darkmode is prefered if not set to l
+    const dark = window.matchMedia('(prefers-color-scheme: dark)');
+    const update = e => fi.href = `./assets/visuals/ks_32x32_${e.matches ? 'd' : 'l'}.gif`;
+    update(dark);
+    dark.addEventListener('change', update);
   </script>
 </head>
 </html>
