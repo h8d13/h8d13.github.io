@@ -1,7 +1,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Svege</title>
-  <link rel="icon" href="./assets/visuals/ks_32x32_l.gif" type="image/gif" media="(prefers-color-scheme: light)">
-  <link rel="icon" href="./assets/visuals/ks_32x32_d.gif" type="image/gif" media="(prefers-color-scheme: dark)">
+  <link rel="icon" id="favicon" href="./assets/visuals/ks_32x32_l.gif" type="image/gif">
+  <script>
+    const favicon = document.getElementById('favicon');
+    const matcher = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function updateFavicon(e) {
+      if (e.matches) {
+        favicon.href = './assets/visuals/ks_32x32_d.gif';
+      } else {
+        favicon.href = './assets/visuals/ks_32x32_l.gif';
+      }
+    }
+
+    updateFavicon(matcher);
+    matcher.addEventListener('change', updateFavicon);
+  </script>
 </head>
 </html>
