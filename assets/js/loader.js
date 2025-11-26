@@ -26,9 +26,11 @@ document.body.addEventListener('click', function(e) {
 //* Helper function to clear typed command and show content
 function showContent(command, content) {
   const editableArea = document.getElementById('editable-area');
-  editableArea.contentEditable = 'false';
   const artElement = document.getElementById('art');
+
+  // Update content without toggling contentEditable to preserve element state
   artElement.innerHTML = content;
+
   // Remove the typed command text
   const textNodes = [];
   const walker = document.createTreeWalker(
@@ -43,7 +45,17 @@ function showContent(command, content) {
     }
   }
   textNodes.forEach(node => node.textContent = '');
-  editableArea.contentEditable = 'true';
+
+  // Reset focus to editable area to maintain proper state
+  editableArea.focus();
+
+  // Move cursor to end of content
+  const range = document.createRange();
+  const selection = window.getSelection();
+  range.selectNodeContents(editableArea);
+  range.collapse(false);
+  selection.removeAllRanges();
+  selection.addRange(range);
 }
 
 //* Redirect to /alpine when user types "alpine"
@@ -52,6 +64,29 @@ function showContent(command, content) {
 //* Show help when user types "help"
 //* Show repos when user types "repos"
 const editableArea = document.getElementById('editable-area');
+
+//* Handle keyboard events to prevent breaking the editable zone
+editableArea.addEventListener('keydown', function(e) {
+  // Ensure the editable area remains editable
+  if (!editableArea.isContentEditable) {
+    editableArea.contentEditable = 'true';
+  }
+});
+
+//* Handle beforeinput to maintain proper state during deletions
+editableArea.addEventListener('beforeinput', function(e) {
+  // Ensure proper behavior for delete operations
+  if (e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward' || e.inputType === 'deleteByCut') {
+    // Allow default behavior but ensure contenteditable stays true
+    setTimeout(() => {
+      if (!editableArea.isContentEditable) {
+        editableArea.contentEditable = 'true';
+        editableArea.focus();
+      }
+    }, 0);
+  }
+});
+
 editableArea.addEventListener('input', function() {
   const text = editableArea.textContent.trim().toLowerCase();
   if (text === 'alpine') {
