@@ -1,12 +1,12 @@
 //* Typewriter effect for title
-const title = 'Svege';
+const title = 'THE WALL';
 let i = 0;
 
 function typeWriter() {
   if (i < title.length) {
     document.title = title.substring(0, i + 1);
     i++;
-    setTimeout(typeWriter, 200);
+    setTimeout(typeWriter, 310);
   }
 }
 
