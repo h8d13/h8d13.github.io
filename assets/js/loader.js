@@ -31,31 +31,20 @@ function showContent(content) {
   // Update content without toggling contentEditable to preserve element state
   artElement.innerHTML = content;
 
-  // Remove all text nodes that are not inside the art element
-  const textNodes = [];
-  const walker = document.createTreeWalker(
-    editableArea,
-    NodeFilter.SHOW_TEXT,
-    {
-      acceptNode: function(node) {
-        // Only accept text nodes that are NOT inside the art element
-        if (!artElement.contains(node)) {
-          return NodeFilter.FILTER_ACCEPT;
-        }
-        return NodeFilter.FILTER_REJECT;
-      }
-    },
-    false
-  );
-  while (walker.nextNode()) {
-    textNodes.push(walker.currentNode);
+  // Remove all child nodes that are not the art element
+  const nodesToRemove = [];
+  for (let i = 0; i < editableArea.childNodes.length; i++) {
+    const node = editableArea.childNodes[i];
+    if (node !== artElement) {
+      nodesToRemove.push(node);
+    }
   }
-  textNodes.forEach(node => node.remove());
+  nodesToRemove.forEach(node => node.remove());
 
   // Reset focus to editable area to maintain proper state
   editableArea.focus();
 
-  // Move cursor to end of content
+  // Move cursor to end of editable area (after the art element)
   const range = document.createRange();
   const selection = window.getSelection();
   range.selectNodeContents(editableArea);
@@ -85,7 +74,12 @@ function getTypedText() {
     NodeFilter.SHOW_TEXT,
     {
       acceptNode: function(node) {
-        if (!artElement.contains(node)) {
+        // Skip empty text nodes
+        if (node.textContent.trim() === '') {
+          return NodeFilter.FILTER_SKIP;
+        }
+        // Accept text nodes that are NOT inside the art element
+        if (!artElement.contains(node) && node !== artElement) {
           return NodeFilter.FILTER_ACCEPT;
         }
         return NodeFilter.FILTER_REJECT;
