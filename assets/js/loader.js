@@ -11,4 +11,12 @@ document.body.addEventListener('input', function(e) {
   if (text === 'alpine') {
     window.location.href = '/alpine';
   }
+  if (text === 'arch') {
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://copy.sh/v86/?profile=archlinux';
+    iframe.style.width = '100%';
+    iframe.style.height = '600px';
+    iframe.style.border = 'none';
+    document.body.appendChild(iframe);
+  }
 });
