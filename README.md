@@ -6,5 +6,4 @@
     - Dl files from `Releases` and the `bios/` 
     - Generated system in `images/` from the Docker build
     - Adapt paths to match our own
-- Add support for save state
 
