@@ -7,29 +7,15 @@ const update = e => fi.href = `./assets/visuals/ks_32x32_${e.matches ? 'd' : 'l'
 update(dark);
 dark.addEventListener('change', update);
 
-//* Flash on user interaction
-let flashInterval = null;
+//* Toggle icon on user interaction
 let toggle = false;
-let isFlashing = false;
 
-function flash() {
-  if (isFlashing) return; // Prevent overlapping flashes
-  isFlashing = true;
-
-  flashInterval = setInterval(() => {
-    fi.href = `./assets/visuals/ks_32x32_${toggle ? 'd' : 'l'}.gif`;
-    toggle = !toggle;
-  }, 500);
-
-  setTimeout(() => {
-    clearInterval(flashInterval);
-    flashInterval = null;
-    update(dark);
-    isFlashing = false;
-  }, 1000);
+function toggleIcon() {
+  toggle = !toggle;
+  fi.href = `./assets/visuals/ks_32x32_${toggle ? 'd' : 'l'}.gif`;
 }
 
-//* Trigger flash on any interaction
+//* Trigger toggle on any interaction
 ['click', 'mousemove', 'keydown', 'scroll'].forEach(event => {
-  document.addEventListener(event, flash);
+  document.addEventListener(event, toggleIcon);
 });
