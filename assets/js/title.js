@@ -10,4 +10,11 @@ function typeWriter() {
   }
 }
 
-typeWriter();
+function startTypeWriter() {
+  i = 0;
+  document.title = '';
+  typeWriter();
+}
+
+startTypeWriter();
+window.addEventListener('focus', startTypeWriter);
