@@ -25,13 +25,14 @@ document.body.addEventListener('click', function(e) {
 
 //* Helper function to clear typed command and show content
 function showContent(command, content) {
-  document.body.contentEditable = 'false';
+  const editableArea = document.getElementById('editable-area');
+  editableArea.contentEditable = 'false';
   const artElement = document.getElementById('art');
   artElement.innerHTML = content;
   // Remove the typed command text
   const textNodes = [];
   const walker = document.createTreeWalker(
-    document.body,
+    editableArea,
     NodeFilter.SHOW_TEXT,
     null,
     false
@@ -42,15 +43,16 @@ function showContent(command, content) {
     }
   }
   textNodes.forEach(node => node.textContent = '');
-  document.body.contentEditable = 'true';
+  editableArea.contentEditable = 'true';
 }
 
 //* Redirect to /alpine when user types "alpine"
 //* Redirect to /arch when user types "arch"
 //* Show help when user types "help"
 //* Show repos when user types "repos"
-document.body.addEventListener('input', function(e) {
-  const text = document.body.textContent.trim().toLowerCase();
+const editableArea = document.getElementById('editable-area');
+editableArea.addEventListener('input', function() {
+  const text = editableArea.textContent.trim().toLowerCase();
   if (text === 'alpine') {
     window.location.href = '/alpine';
   }

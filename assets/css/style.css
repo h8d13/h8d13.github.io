@@ -9,6 +9,14 @@ body {
   align-items: center;
   min-height: 100vh;
 }
+#editable-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  outline: none;
+}
 pre {
   white-space: pre;
   margin: 0;
