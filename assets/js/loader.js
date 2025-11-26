@@ -48,6 +48,7 @@ function showContent(command, content) {
 
 //* Redirect to /alpine when user types "alpine"
 //* Redirect to /arch when user types "arch"
+//* Redirect to /vase when user types "vase"
 //* Show help when user types "help"
 //* Show repos when user types "repos"
 const editableArea = document.getElementById('editable-area');
@@ -59,11 +60,15 @@ editableArea.addEventListener('input', function() {
   if (text === 'arch') {
     window.location.href = '/arch';
   }
+  if (text === 'vase') {
+    window.location.href = '/vase';
+  }
   if (text === 'help') {
     showContent('help', `Available Commands:
 
   alpine  - Launch Alpine v86
   arch    - Launch Arch v86
+  vase    - Launch Vase
   repos   - Show repository links
   help    - Show this help message
   `);
