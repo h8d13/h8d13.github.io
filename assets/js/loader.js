@@ -17,6 +17,16 @@ document.body.addEventListener('click', function(e) {
 const commandInput = document.getElementById('command-input');
 const artElement = document.getElementById('art');
 
+//* Auto-focus input on page load
+commandInput.focus();
+
+//* Auto-focus input on any keypress
+document.addEventListener('keydown', function(e) {
+  if (document.activeElement !== commandInput) {
+    commandInput.focus();
+  }
+});
+
 commandInput.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
     e.preventDefault();
