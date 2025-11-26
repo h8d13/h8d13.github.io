@@ -5,6 +5,16 @@ fetch('./assets/art/sauron.txt')
     document.getElementById('art').textContent = art;
   });
 
+//* Delete ASCII art when clicking bin icon
+const deleteBtn = document.getElementById('delete-btn');
+if (deleteBtn) {
+  deleteBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    document.getElementById('art').textContent = '';
+  });
+}
+
 //* Redirect to /alpine when user types "alpine"
 //* Redirect to /arch when user types "arch"
 document.body.addEventListener('input', function(e) {
