@@ -5,16 +5,6 @@ fetch('./assets/art/sauron.txt')
     document.getElementById('art').textContent = art;
   });
 
-//* Delete ASCII art when clicking bin icon
-const deleteBtn = document.getElementById('delete-btn');
-if (deleteBtn) {
-  deleteBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    document.getElementById('art').textContent = '';
-  });
-}
-
 //* Handle link clicks
 document.body.addEventListener('click', function(e) {
   if (e.target.tagName === 'A') {
@@ -47,6 +37,7 @@ commandInput.addEventListener('keydown', function(e) {
   arch    - Launch Arch v86
   vase    - Launch Vase
   repos   - Show repository links
+  clear   - Clear the screen
   help    - Show this help message
   `;
       commandInput.value = '';
@@ -58,6 +49,9 @@ commandInput.addEventListener('keydown', function(e) {
   <a href="https://github.com/ryk4rd/grimaur" target="_blank">110k+ AUR Packages</a>
   <a href="https://github.com/h8d13/TERCES" target="_blank">U2F Fido2 Keys</a>
   `;
+      commandInput.value = '';
+    } else if (command === 'clear') {
+      artElement.textContent = '';
       commandInput.value = '';
     } else {
       commandInput.value = '';
