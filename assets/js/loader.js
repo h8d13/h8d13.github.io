@@ -45,8 +45,8 @@ commandInput.addEventListener('keydown', function(e) {
 
   alpine  - Launch Alpine v86
   arch    - Launch Arch v86
-  ascii   - Launch ASCII Art Gallery
-  repos   - Show repository links
+  ascii   - Launch ASCII Art Gallery (Then UP/DOWN arrows)
+  repos   - Show repositories links
   clear   - Clear the screen
   help    - Show this help message
   `;
