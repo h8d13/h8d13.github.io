@@ -56,6 +56,7 @@ commandInput.addEventListener('keydown', function(e) {
 
   <a href="https://github.com/h8d13/Vase" target="_blank">Arch Installer</a>
   <a href="https://github.com/h8d13/VaseX" target="_blank">Artix Installer</a>
+  <a href="https://github.com/h8d13/ALPM-FS" target="_blank">Alpine MRFS Installer</a>
   <a href="https://github.com/ryk4rd/grimaur" target="_blank">110k+ AUR Packages</a>
   <a href="https://github.com/h8d13/TERCES" target="_blank">U2F Fido2 Keys</a>
   `;
