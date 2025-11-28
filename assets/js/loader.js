@@ -36,8 +36,8 @@ commandInput.addEventListener('keydown', function(e) {
       window.location.href = '/alpine';
     } else if (command === 'arch') {
       window.location.href = '/arch';
-    } else if (command === 'vase') {
-      window.location.href = '/vase';
+    } else if (command === 'ascii') {
+      window.location.href = '/ascii-index';
     } else if (command === 'help') {
       artElement.textContent = `Available Commands:
 
@@ -45,7 +45,7 @@ commandInput.addEventListener('keydown', function(e) {
 
   alpine  - Launch Alpine v86
   arch    - Launch Arch v86
-  vase    - Launch Vase
+  ascii   - Launch ASCII Art Gallery
   repos   - Show repository links
   clear   - Clear the screen
   help    - Show this help message
